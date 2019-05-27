@@ -1,0 +1,29 @@
+Find a proof where I can perform every command (and have it do something):
+	- check what happens afterwards
+	- this check won't be exhaustive, but it should get most of the cases taken care of
+
+Already Processed:
+	- simpMod --> reduces to applyReducePlus
+	- applyReducePlus --> tries to go through a formula, simplifying memberships and equalities in very simple ways
+	- addOpsITP, addEqsITP, addMbsITP --> just simple module injection functions
+	- add-rules --> reduces to addEqsITP, addMbsITP, and addLabelFormulas --- adds LabeledRules to Goal
+	- addHypTo --> adds a hypothesis to a module, converts formula to conditional equation or membership
+	- addLemTo --> same as addHypTo but marked as lemma instead of hypothesis
+	- addLabeledFormulas --> adds known facts to a goal
+
+
+These are things which need to be checked:
+	- equiv-propagate
+	- makeNewGoalList, makeChildGoal, makeBrotherGoal, makeTermSplitNewGoalList, makeSplitNewGoalList
+	- cov-split-scheme
+	- normalize
+	- add-named-ctors
+	- set-default-ctor
+
+
+These are unlikely, but still need checking
+	- setFormula
+
+
+What is this? meta-pretty-print
+	- mpp-mod

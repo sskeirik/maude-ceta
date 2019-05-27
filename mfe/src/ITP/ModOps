@@ -1,0 +1,195 @@
+basic.maude:  op opResultType : Module Type -> OpDeclFilter [ctor].
+basic.maude:  op mbResultSubtype : Module Sort -> MembAxFilter [ctor].
+check.maude:  op sameTermKind : Module Term Term -> Bool .
+check.maude:  op match : Module Term Term -> Bool .
+check.maude:  op moreSpecific? : Module Term Type ~> Bool .
+check.maude:  op specialCtors : Module Type -> Bool .
+check.maude:  op rootIsComm : Module Term ~> Bool .
+check.maude:  op expandables : Module TermList TermList ~> ExpandResult [memo].
+check.maude:  op expandTerm : Module MembAx Variable ~> MembAxSet .
+check.maude:  op expandVar : Module MembAx Variable OpDeclSet -> MembAxSet .
+check.maude:  op superTypes : Module Type ~> TypeSet .
+check.maude:  op $superTypes : Module Sort SortSet ~> SortSet .
+check.maude:  op nonEmptyTypes : Module -> TypeSet [memo].
+check.maude:  op nonEmptyTypesImpl : Module OpDeclSet MembAxSet TypeSet Bool
+check.maude:  op simplify : Module Clause -> Clause .
+check.maude:  op reducible-formula : Module Term EquationSet -> Clause .
+check.maude:  op reducible-formula1 : Module Term Equation Nat ~> Clause .
+check.maude:  op top-ctor-formula : Module Term MembAxSet -> Clause .
+check.maude:  op top-ctor-formula1 : Module Term MembAx Nat -> Clause .
+check.maude:  op patterns : Module Sort -> MembAxSet .
+check.maude:  op op-patterns : Module Sort ~> OpDeclSet .
+check.maude:  op $op-patterns : Module Sort OpDeclSet OpDeclSet ~> OpDeclSet .
+check.maude:  op proofObligation : Module MembAx -> ProofObligation .
+check.maude:  op ctor-ops : Module ~> OpDeclSet .
+check.maude:  op $ctor-ops : Module OpDeclSet OpDeclSet ~> OpDeclSet .
+check.maude:  op ctor-subsignature : Module -> Module .
+check.maude:  op checkCompleteness : Module MembAxSet EquationSet MembAxSet
+check.maude:  op checkCompleteness : Module ~>  ProofObligationSet .
+check.maude:  op cc : Module ~> ProofObligationSet .
+cong.maude:  op init-cr : Module -> CongRecord .
+cong.maude:  op inconsistent? : Module ~> Bool .
+ext-mod.maude:  op find-op : Qid TypeList Type Module -> OpFindResult .
+ext-mod.maude:  op setName : Header FModule -> FModule .
+ext-mod.maude:  op setImports : ImportList FModule -> FModule .
+ext-mod.maude:  op addImports : ImportList FModule -> FModule .
+ext-mod.maude:  op setOps : OpDeclSet FModule -> FModule .
+ext-mod.maude:  op addOpsITP : OpDeclSet FModule -> FModule .
+ext-mod.maude:  op setEqs : EquationSet FModule -> FModule .
+ext-mod.maude:  op addEqsITP : EquationSet FModule -> FModule .
+ext-mod.maude:  op setMbs : MembAxSet FModule -> FModule .
+ext-mod.maude:  op addMbsITP : MembAxSet FModule -> FModule .
+ext-mod.maude:  op mbs-from-ops : Module OpDeclSet -> MembAxSet .
+ext-mod.maude:  op is-comm : Module Qid Sort -> Bool .
+ext-mod.maude:  op is-comm-rel : Module Qid Sort -> Bool .
+ext-pres-arith.maude:  op extModSupInf : Module -> Module .
+ext-pres-arith.maude:op isExtLinIneqAux? : Term Module -> Bool .
+ext-pres-arith.maude:op isExtLinIneq? : Formula Module -> Bool .
+ext-pres-arith.maude:op getExtLinIneq : EquationSet Module Module -> Formula .
+ext-pres-arith.maude:op getGroundLinIneqs : FModule -> Formula .
+ext-pres-arith.maude:  op assignVar : TermSet Module ~> Replacement .
+ext-pres-arith.maude:  op preProcFormulaNew : Formula FModule ~> Formula .
+ext-pres-arith.maude:  op createNewSolution : Module ~> Formula .
+ext-pres-arith.maude:  op createNewSolutionNeg : Equality Module ~> Formula .
+ext-pres-arith.maude:  op cook : Module Formula -> Formula .
+ext-pres-arith.maude:  op createNewSolutionAux2 : Module Formula ~> Formula .
+ext-term.maude:  op subtype? : Module Type Type ~> Bool .
+ext-term.maude:  op sameKinds : Module TypeList TypeList ~> Bool .
+ext-term.maude:  op true-con : Module ~> Constant .
+ext-term.maude:  op false-con : Module ~> Constant .
+ext-term.maude:  op kindOf : Module Term ~> Kind .
+ext-term.maude:  op get-kinds : Module TermList ~> TypeList .
+ext-term.maude:  op get-poly-kinds : Module NatList TypeList -> TypeList .
+ext-term.maude:  op $get-poly-kinds : Module NatList TypeList Nat TypeList -> TypeList .
+itp-builtins.maude:  op ctor-mbs-with-sort : Sort Module SubsortFlag ~> MembAxSet .
+itp-logic.maude:  op reduce : Formula Module ~> Formula .
+itp-logic.maude:  op normalize : Formula Module ~> Formula .
+itp.maude:  op new-proof : Oid String Module Formula -> AttributeSet .
+itp.maude:  op new-proof : Oid String Module Condition Term Term -> AttributeSet .
+itp.maude:  op new-proof : Oid String Module Term Term -> AttributeSet .
+itp.maude:  op fixExternalModule : Module ~> ParseModuleResult .
+itp.maude:  op toFModule : Module -> FModule .
+itp-parser.maude:  op goal_:_|-_. : X$UserToken X$UserModule X$UserSentence -> Input [ctor] .
+itp-parser.maude:  op parse`(_`)in_. : X$UserTerm X$UserModule -> Input [ctor] .
+itp-parser.maude:  op new-goal_:_|-_. : X$UserToken X$UserModule X$UserSentence -> Input [ctor] .
+itp-parser.maude:  op module : Qid -> UserModule
+itp-parser.maude:  op itp-grammar : -> Module .
+itp-parser.maude:  op fixBoundVars : Module VariableSet TermList ~> TermList .
+itp-parser.maude:  op parseTerm : Module VariableSet Term Type? ~> Term .
+itp-parser.maude:  op parseITPTermSet : Module VariableSet Term ~> ITPTermSet .
+itp-parser.maude:  op $parseITPTermSet : Module VariableSet TermList ITPTermSet ~> ITPTermSet .
+itp-parser.maude:  op parseITPTermSetError : Module VariableSet Term ~> QidList .
+itp-parser.maude:  op parseTermError : Module VariableSet Term Type? ~> QidList .
+itp-parser.maude:  op parseVar : Module VariableSet Term ~> Variable .
+itp-parser.maude:  op parseVarError : Module VariableSet Term ~> QidList .
+itp-parser.maude:  op parseSubst : TermList VariableSet Module ~> Substitution .
+itp-parser.maude:  op parseSubstError : TermList VariableSet Module ~> QidList .
+itp-parser.maude:  op parseVarSet : Module Term ~> VariableSet .
+itp-parser.maude:  op $parseVarSet : Module TermList VariableSet ~> VariableSet .
+itp-parser.maude:  op parseVarSetError : Module Term ~> QidList .
+itp-parser.maude:  op parseFormula : Term Module VariableSet ~> ParseFormulaResult .
+itp-parser.maude:  op parseConjunction : ParseFormulaResult TermList Module VariableSet
+itp-parser.maude:  op parseDisjunction : ParseFormulaResult TermList Module VariableSet
+itp-parser.maude:  op module : Module -> ParseModuleResult [ctor].
+itp-parser.maude:  op parse-module-error : QidList -> ParseModuleResult [ctor].
+itp-parser.maude:  op isParameterized? : FModule -> Bool .
+itp-parser.maude:  op normalize : Module TypeList ~> TypeList .
+itp-parser.maude:  op normalize : Module HookList ~> HookList .
+itp-parser.maude:  op normalize : Module AttrSet ~> AttrSet .
+itp-parser.maude:  op normalize : Module OpDeclSet ~> OpDeclSet .
+itp-parser.maude:  op fixupModule : FModule ~> FModule .
+itp-parser.maude:  op unflattenMod : FModule ~> FModule .
+itp-parser.maude:  op opVar : Nat Type Module ~> Variable .
+itp-parser.maude:  op makeTerm : Qid TermList Type Module ~> Term .
+itp-parser.maude:  op $extractMb : Qid Sort TypeList VarList EqCondition Nat Module
+itp-parser.maude:  op extractMbs : OpDeclSet FModule -> MembAxSet .
+itp-parser.maude:  op parseModule : Term Database ~> ParseModuleResult .
+itp-parser.maude:  op $parseModule : Tuple{Database, ModuleExpression} ~> ParseModuleResult .
+itp-parser.maude:  op $parseModule : Module ~> ParseModuleResult .
+itp-reduce.maude:op isAnIdentity? : Module Formula -> Bool .
+itp-reduce.maude:op matchPlus : Module Term Term Condition Nat ~> Substitution? .
+itp-reduce.maude:op xMatchPlusGround : Module Term Term EqCondition Nat ~> MatchPair? .
+itp-reduce.maude:op xApplyPlusGround : Module Term Equation -> ReducePlusOneResult .
+itp-reduce.maude:op reducePlusOne : Module Term -> ReducePlusOneResult .
+itp-reduce.maude:op reducePlusOneAux : Module Term Nat -> ReducePlusOneResult .
+itp-reduce.maude:op all-have-sort? : Module TermList Sort -> Bool .
+itp-reduce.maude:op applyReducePlus : Module Formula ~> Formula .
+itp-reduce.maude:op $applyReducePlus : Module CongRecord Formula ~> Formula .
+itp-reduce.maude:op applyReducePlus : Module CongRecord Atomic Nat ~> Formula .
+itp-reduce.maude:op solveCondWithReducePlus : Module EqCondition -> Bool .
+itp-tool.maude:  op module:_ : FModule -> GoalField [ctor].
+itp-tool.maude:  op new-goal : String Module Formula -> Goal .
+itp-tool.maude:  op getMod : Goal -> FModule .
+itp-tool.maude:  op setMod : FModule Goal -> Goal .
+itp-tool.maude:  op none : -> Module? .
+itp-tool.maude:  op errorModule : ~> Module [ctor].
+itp-tool.maude:  op parseInput : Module Goal? GroundTerm Database ~> ParseInputResult .
+itp-tool.maude:  op $parseInput : Qid TermList Module VariableSet Module? Goal?
+itp-tool.maude:  op $parseInput1 : Sort Term VariableSet Module? Goal?
+itp-tool.maude:  op meta-pretty-print-VarSet : Module VariableSet -> QidList .
+itp-tool.maude:  op meta-pretty-print-Formula : Module Formula ~> QidList .
+itp-tool.maude:  op $mpp : Module Formula Nat Nat ~> QidList .
+itp-tool.maude:  op kind-vars : Module TermList -> TermList .
+itp-tool.maude:  op $kind-vars : Module TermList Nat TermList ~> TermList  .
+itp-tool.maude:  op root-expr : Module Term -> Term .
+itp-tool.maude:  op matching-mb? : MembAxSet Module Term -> Bool .
+itp-tool.maude:  op share-subsort? : Module Type Type ~> Bool .
+itp-tool.maude:  op should-expand? : Module Term Type -> Bool .
+itp-tool.maude:  op first-match : Module Substitution Substitution ~> Substitution? .
+itp-tool.maude:  op $first-match : Module Substitution Substitution
+itp-tool.maude:  op normalize : Module EqCondition ~> EqCondition .
+itp-tool.maude:  op subsumes? : Module CondSubst CondSubst ~> Bool .
+itp-tool.maude:  op add : Module CondSubstSet CondSubst -> CondSubstSet .
+itp-tool.maude:  op $add : Module CondSubstSet CondSubst CondSubstSet -> CondSubstSet .
+itp-tool.maude:  op $unflatten : Module Term ~> Term .
+itp-tool.maude:  op make-me : Module Term Term ~> MatchEq .
+itp-tool.maude:  op make-test : Module Qid TermList TermList MatchEqSet
+itp-tool.maude:  op $make-test : Module TermList TermList MatchEqSet ~> ExpansionTestSet .
+itp-tool.maude:  op expandable-vars1 : Module MatchEqSet ~> ExpandableVarsResult1 .
+itp-tool.maude:  op $expandable-vars1 : Module MatchEqSet MatchEqSet VariableSet
+itp-tool.maude:  op expandable-vars : Module ExpansionTestSet ~> ExpandableVarsResult .
+itp-tool.maude:  op $expandable-vars : Module ExpansionTestSet
+itp-tool.maude:  op all-lhs-eq-share-subsort : Module Type -> ITPTermSet .
+itp-tool.maude:  op $all-lhs-eq-share-subsort : EquationSet Module Type ITPTermSet -> ITPTermSet .
+itp-tool.maude:  op os-cond : Module Substitution ~> EqCondition .
+itp-tool.maude:  op $os-cond : Module Substitution EqCondition ~> EqCondition .
+itp-tool.maude:  op os-subst-rhs : Module Substitution CondSubstSet ~> CondSubstSet .
+itp-tool.maude:  op $os-subst-rhs : Module Substitution CondSubstSet CondSubstSet ~>
+itp-tool.maude:  op vars-to-kind : Module VariableSet -> Substitution .
+itp-tool.maude:  op $vars-to-kind : Module VariableSet VariableSet Substitution
+itp-tool.maude:  op matching-subterms : Module Term EqCondition Term ~> CondSubstSet .
+itp-tool.maude:  op $matching-subterms : Module Term EqCondition Term EqCondition
+itp-tool.maude:  op $matching-subterms1 : Module Term Term EqCondition Nat CondSubstSet
+itp-tool.maude:  op set-type-to-kind : Module Variable ~> Variable .
+itp-tool.maude:  op specialized-eqs : Module Term ~> EquationSet .
+itp-tool.maude:  op $specialized-eqs : Module Term EquationSet EquationSet ~> EquationSet .
+itp-tool.maude:  op $specialized-eqs1 : Module Term Equation Nat EquationSet ~>
+itp-tool.maude:  op eq-instances-rhs-subst : Module Term EquationSet ~> CondSubstSet .
+itp-tool.maude:  op $eq-instances-rhs-subst : Module Term EquationSet
+itp-tool.maude:  op make-ets* : Module ITPTermSet -> ExpansionTestSet .
+itp-tool.maude:  op make-ets : Module ITPTermSet Term -> ExpansionTestSet .
+itp-tool.maude:  op coverset-hyps : Module Formula Term Substitution -> Formula .
+itp-tool.maude:  op mpp-lfs : Module LabeledFormulaSet ~> QidList .
+itp-tool.maude:  op mpp-rules : LabeledRules Module ~> QidList  .
+itp-tool.maude:  op epr : Module Nat -> EquivPropagateResult [ctor].
+itp-tool.maude:  op getEquivTerms : Module Qid Sort -> EquivTermSet .
+itp-tool.maude:  op $getEquivTerms : Module Qid Sort Constant EquationSet EquivTermSet
+itp-tool.maude:  op sr : Module Nat -> SimpResult [ctor].
+itp-tool.maude:  op parse-simp : FormulaSet EqCondition Module NameFn ~> SimpResult .
+itp-tool.maude:  op simpMb : Module Nat MembAx Bool MembAxSet -> SimpResult .
+itp-tool.maude:  op simpEq : Module Nat Equation Bool EquationSet -> SimpResult .
+itp-tool.maude:  op simpMod : Module Nat -> SimpResult .
+itp-tool.maude:  op init-itp : Module -> System [ctor].
+itp-tool.maude:  op addHypTo : Formula Module Qid ~> Module .
+itp-tool.maude:  op addLemTo : Formula Module Qid ~> Module .
+itp-tool.maude:  op subst-sort-formula : Substitution Module -> Formula .
+itp-tool.maude:  op mbs-for-sort : Module Sort ~> MembAxSet .
+itp-tool.maude:  op $mbs-for-sorts : Module SortSet MembAxSet ~> MembAxSet .
+itp-tool.maude:  op varsSubsort : VariableSet Sort Module ~> ITPTermSet .
+itp-tool.maude:  op condSubsort : EqCondition Sort Module ~> ITPTermSet .
+itp-tool.maude:  op hasIntKind? : Module Term -> Bool .
+itp-tool.maude:  op substituteEquality : Module Substitution VariableSet -> Formula .
+itp-tool.maude:  op genTermSplit : Nat Module Term MembAxSet -> PairSubstFormulaSet .
+itp-tool.maude:  op isAnHypothesis? : Module Term Sort MembAxSet -> Bool .
+itp-tool.maude:  op $eq-split-scheme : Module Formula CondSubstSet FormulaSet
+itp-tool.maude:  op getInsEqs : Term EquationSet Module -> EquationSet .
