@@ -439,6 +439,43 @@ fmod META-BASICS is
   --- sort for having module pairing
   sort ModulePair .
   op pair : Module Module -> ModulePair [ctor] .
+
+  op is-assoc? : AttrSet -> Bool .
+  eq is-assoc?(assoc AS) = true .
+  eq is-assoc?(AS) = false [owise] .
+
+  op getCommOps : OpDeclSet -> OpDeclSet .
+ ceq getCommOps(op Q : TpL -> Tp [comm AS]. Ops) =
+   (op Q : TpL -> Tp [comm AS].)
+   getCommOPs(Ops)
+   if is-assoc?(AS) = false .
+  eq getCommOps(Ops) = none [owise] .
+
+  op handleSimpleComm : Module OpDeclSet EquationSet -> EquationSet .
+  eq handleSimpleComm(M,Ops,Eqs) = handleSimpleComm(M,buildTermList(getCommOps(Ops)),Eqs) .
+
+  op handleSimpleComm : Module TermList EquationSet -> EquationSet .
+  eq handleSimpleComm(M,TL,Eq Eqs) =
+    if matchingEq?(M,TL,Eq) then handleSimpleComm(Eq) else none if Eq
+    handleSimpleComm(M,TL,Eqs) .
+  eq handleSimpleComm(M,TL,none) = none .
+
+  op matchingEq? : Module TermList Equation -> 
+
+  op buildTermList : OpDeclSet -> TermList .
+  eq buildTermList(Op Ops) = buildTerm(Op,0),buildTermList(Ops) .
+  eq buildTermList(none) = empty .
+
+  op buildTerm : OpDecl Nat -> Term .
+  eq buildTerm(op Q : TpL -> Tp [AS].,N) = buildTerm(Q,N,TpL,Tp) .
+
+  op buildTerm : Qid Nat TypeList Type -> Term .
+  eq buildTerm(Q,N,Tp TpL,X) = Q[buildTerm'(N,Tp TpL)] .
+  eq buildTerm(Q,N,nil ,X) = qid(string(Q) + "." + string(X)) .
+
+  op buildTerm' : Nat TypeList -> Term .
+  eq buildTerm'(N,Tp TpL) = qid("@" + string(N,10) + ":" + string(Tp)), buildTerm'(s(N),TpL) .
+  eq buildTerm'(N,nil ) = empty .
 endfm
 
 fmod PTA-OPS is
