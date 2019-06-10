@@ -105,6 +105,7 @@ fmod META-BASICS is
                  sort Set{Nat} to NatSet,
                  op empty to none,
                  op _,_ to _;_) .
+  pr CONVERSION .
 
   sort NeKindList KindList .
   subsort Kind < NeKindList < KindList < TypeList .
@@ -158,7 +159,7 @@ fmod META-BASICS is
   vars NL''    : NatList .
   vars NL'''   : NatList .
   var NeNL     : NeNatList .
-  var Op       : OpDecl .
+  var Op Op'   : OpDecl .
   var Ops      : OpDeclSet .
   var Q        : Qid .
   var QL       : QidList .
@@ -168,7 +169,7 @@ fmod META-BASICS is
   var SS       : SortSet .
   var St       : String .
   var SSDS     : SubsortDeclSet .
-  var T T'     : Term .
+  var T T' L R : Term .
   var TL TL'   : TermList .
   var Tp Tp'   : Type .
   var TpL TpL' : TypeList .
@@ -447,7 +448,7 @@ fmod META-BASICS is
   op getCommOps : OpDeclSet -> OpDeclSet .
  ceq getCommOps(op Q : TpL -> Tp [comm AS]. Ops) =
    (op Q : TpL -> Tp [comm AS].)
-   getCommOPs(Ops)
+   getCommOps(Ops)
    if is-assoc?(AS) = false .
   eq getCommOps(Ops) = none [owise] .
 
@@ -456,11 +457,17 @@ fmod META-BASICS is
 
   op handleSimpleComm : Module TermList EquationSet -> EquationSet .
   eq handleSimpleComm(M,TL,Eq Eqs) =
-    if matchingEq?(M,TL,Eq) then handleSimpleComm(Eq) else none if Eq
+    if matchingEq?(M,TL,Eq) then handleSimpleComm(Eq) else none fi Eq
     handleSimpleComm(M,TL,Eqs) .
   eq handleSimpleComm(M,TL,none) = none .
 
-  op matchingEq? : Module TermList Equation -> 
+  op handleSimpleComm : Equation -> Equation .
+  eq handleSimpleComm(eq Q[L,R] = T' [AS].) = (eq Q[R,L] = T' [AS].) .
+
+  op matchingEq? : Module TermList Equation -> Bool .
+  eq matchingEq?(M,(T,TL),Eq) =
+    metaMatch(M,T,lhs(Eq),nil,0) :: Substitution or-else matchingEq?(M,TL,Eq) .
+  eq matchingEq?(M,empty,Eq) = false .
 
   op buildTermList : OpDeclSet -> TermList .
   eq buildTermList(Op Ops) = buildTerm(Op,0),buildTermList(Ops) .
@@ -470,12 +477,17 @@ fmod META-BASICS is
   eq buildTerm(op Q : TpL -> Tp [AS].,N) = buildTerm(Q,N,TpL,Tp) .
 
   op buildTerm : Qid Nat TypeList Type -> Term .
-  eq buildTerm(Q,N,Tp TpL,X) = Q[buildTerm'(N,Tp TpL)] .
-  eq buildTerm(Q,N,nil ,X) = qid(string(Q) + "." + string(X)) .
+  eq buildTerm(Q,N,Tp TpL,Tp') = Q[buildTerm'(N,Tp TpL)] .
+  eq buildTerm(Q,N,nil ,Tp') = qid(string(Q) + "." + string(Tp')) .
 
   op buildTerm' : Nat TypeList -> Term .
   eq buildTerm'(N,Tp TpL) = qid("@" + string(N,10) + ":" + string(Tp)), buildTerm'(s(N),TpL) .
   eq buildTerm'(N,nil ) = empty .
+
+  op removeComm : OpDeclSet -> OpDeclSet .
+  eq removeComm(Op Op' Ops) = removeComm(Op) removeComm(Op' Ops) .
+  eq removeComm(op Q : TpL -> Tp [comm AS].) = (op Q : TpL -> Tp [AS].)         .
+  eq removeComm(op Q : TpL -> Tp [AS].     ) = (op Q : TpL -> Tp [AS].) [owise] .
 endfm
 
 fmod PTA-OPS is
@@ -662,7 +674,7 @@ fmod PTA-OPS is
         --- The line below is wrong.  We need to instantiate the universal
         --- ops with specific kinds as needed or not allow universal ops
         --- to be used in rules explicitly.
-        pta-ops(M, remove-universal-ops(getOps(M)))
+        pta-ops(M, removeComm(remove-universal-ops(getOps(M))))
         pta-state-decls(CS)
         (none).MembAxSet
         Eqs
@@ -1109,10 +1121,10 @@ fmod SCC is
                sca-accept-eqs(M, getSorts(M)),
                sca-subsort-rules(M, getSubsorts(M))
                  term-rules(TSM, sca-ctor)
-                 sca-op-rules(M, remove-universal-ops(getOps(M)))
+                 sca-op-rules(M, removeComm(remove-universal-ops(getOps(M))))
                  sca-mb-rules(M, TSM, getMbs(M))
-                 sca-eq-rules(M, TSM, sca-ctor, sca-usable-eqs(getEqs(M))))
-   if TSM := eq-statemap(M, sca-usable-eqs(getEqs(M)),
+                 sca-eq-rules(M, TSM, sca-ctor, handleSimpleComm(M,getOps(M),sca-usable-eqs(getEqs(M)))))
+   if TSM := eq-statemap(M, handleSimpleComm(M,getOps(M),sca-usable-eqs(getEqs(M))),
                mb-statemap(M, getMbs(M), init(M))) .
 
   --- Checks the sufficient completeness of a module.
@@ -1802,7 +1814,7 @@ fmod FREE is
                cfa-accept-eqs(M, getSorts(M)),
                cfa-subsort-rules(M, getSubsorts(M))
                  term-rules(TSM, cfa-ctor)
-                 cfa-op-rules(M, remove-universal-ops(getOps(M)))
+                 cfa-op-rules(M, removeComm(remove-universal-ops(getOps(M))))
                  cfa-mb-rules(M, TSM, getMbs(M))
                  cfa-eq-rules(M, TSM, cfa-ctor, cfa-usable-eqs(getEqs(M))))
    if TSM := eq-statemap(M, cfa-usable-eqs(getEqs(M)),
